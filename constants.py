@@ -1,5 +1,5 @@
 TOKEN_ENDPOINT = 'https://icdaccessmanagement.who.int/connect/token'
-CLIENT_ID = 'b25d593f-da09-492c-8d7d--b531-4eb8-9161-6b47d642553b'
+CLIENT_ID = '-da09-492c-8d7d-aaafcdb263d0_08a84125---9161-6b47d642553b'
 CLIENT_SECRET = '='
 SCOPE = 'icdapi_access'
 GRANT_TYPE = 'client_credentials'
