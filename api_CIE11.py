@@ -42,7 +42,3 @@ def search_diagnosis(body: dict, headers: dict) -> CIE11:
             return CIE11(error=True, error_message='No result found!', chapters=[])
         else:
             return CIE11(chapters=chapters)
-
-header = generate_headers()
-body = generate_body("cancer")
-search_diagnosis(body, header)
