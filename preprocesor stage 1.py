@@ -30,7 +30,8 @@ def update_column_values(dataframe: pd.DataFrame, col_name: str, new_values: dic
     return dataframe
 
 
-file = read_file(file_name="/home/leo/Documentos/Datos 1996-2022.xlsx", sheet="Hoja1")
+file = read_file(file_name="/home/leo/Documentos/Proyectos/INTERCON/Datos 1996-2022 Libre de faltas.xlsx",
+                 sheet="Hoja1")
 print('Shape BEFORE deleting empty diagnosis rows:\t', file.shape)
 file = delete_empty_rows(dataframe=file, col_name='Diagnóstico')
 print('Shape AFTER deleting empty diagnosis rows:\t', file.shape)
@@ -40,5 +41,5 @@ unique_diagnosis = get_unique_values(file, 'Diagnóstico')
 print('Unique row count in column {Diagnóstico}:\t', len(unique_diagnosis))
 preprocessed_strings = preprocess_string(unique_diagnosis)
 file = update_column_values(file, 'Diagnóstico', dict(zip(unique_diagnosis, preprocessed_strings)))
-file.to_excel('Datos pre-procesados 1196-2022.xlsx')
+file.to_excel('Datos pre-procesados 1196-2022.xlsx', index=False)
 print(file.head())
