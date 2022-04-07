@@ -1,7 +1,12 @@
+import timeit
+
 import pandas as pd
 import api_CIE11
 import warnings
 from tqdm import tqdm
+import db_script
+from CIE11 import CIE11
+
 warnings.filterwarnings("default")
 
 
@@ -46,6 +51,27 @@ def get_CIE11_diagnosis(diagnosis_list: set):
     return found_diagnosis, not_found_diagnosis
 
 
+def print_diagnosis(found, not_found: list[CIE11]):
+    print('Not found diagnosis:', len(not_found))
+    if str.upper(input('Print not found diagnosis? Y/N: ')) == 'Y':
+        for x in not_found:
+            print(x.diagnosis)
+    print('****' * 30)
+    print('Correct diagnosis:', len(found))
+    if str.upper(input('Print diagnosis? Y/N: ')) == 'Y':
+        [print(x) for x in found]
+
+
+def save_statements(statement1: list[str], statement2: list[str]):
+    with open('diagnostico.sql', 'w') as f:
+        for line in statement1:
+            f.write(f"{line}\n")
+
+    with open('diagnostico_cie11.sql', 'w') as f:
+        for line in statement2:
+            f.write(f"{line}\n")
+
+
 file = read_file(file_name="Datos pre-procesados 1196-2022.xlsx", sheet="Sheet1")
 unique_simple_values = get_unique_values(file, 'Diagnóstico')
 unique_separated_values = separate_string_values(unique_simple_values, separator='/')
@@ -53,5 +79,9 @@ unique_simple_values = delete_values_by_condition(unique_simple_values, conditio
 
 final_diagnosis_set = join_lists_as_set(unique_simple_values, unique_separated_values)
 found_diagnosis, not_found_diagnosis = get_CIE11_diagnosis(final_diagnosis_set)
-print('Not found diagnosis:', len(not_found_diagnosis))
-[print('Not found: ', x.__str__()) for x in not_found_diagnosis]
+print_diagnosis(found_diagnosis, not_found_diagnosis)
+
+diagnostico_statements = list(db_script.generate_diagnostico_statements(found_diagnosis))
+diagnostico_cie11_statements = list(db_script.generate_diagnostico_cie11_statements(found_diagnosis))
+save_statements(diagnostico_statements, diagnostico_cie11_statements)
+
