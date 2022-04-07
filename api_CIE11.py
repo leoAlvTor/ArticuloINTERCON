@@ -37,7 +37,7 @@ def search_diagnosis(body: dict, headers: dict) -> CIE11:
     if response_json['error']:
         return CIE11(error=True, error_message=response_json['errorMessage'], chapters=[])
     else:
-        chapters = [x['chapter'] for x in response_json['destinationEntities']]
+        chapters = [x['chapter'] for x in response_json['destinationEntities'] if x['chapter'] is not None]
         if len(chapters) == 0:
             return CIE11(error=True, error_message='No result found!', chapters=[])
         else:
